@@ -63,12 +63,12 @@ const Customizer = () => {
           prompt,
         })
       })
-      
+
       const data = await response.json();
 
-      if (data['message']){
+      if (data['message']) {
         alert(data['message'])
-      }else handleDecals(type, `data:image/png;base64,${data.photo}`)
+      } else handleDecals(type, `data:image/png;base64,${data.photo}`)
     } catch (error) {
       alert(error);
     } finally {
@@ -132,9 +132,9 @@ const Customizer = () => {
               <div className="editortabs-container tabs">
                 {EditorTabs.map((tab) => (
                   <Tab
-                    key={Tab.name}
+                    key={tab.name}
                     tab={tab}
-                    handleClick={() => setActiveEditorTab(tab.name)}
+                    handleClick={() => setActiveEditorTab(prevTab => prevTab === tab.name ? '' : tab.name)}
                   />
                 ))}
 
@@ -144,14 +144,23 @@ const Customizer = () => {
           </motion.div>
 
           <motion.div
-            className="absolute z-10 top-5 right-5"
+            className="absolute z-10 top-5 right-5 flex gap-2"
             {...fadeAnimation}
           >
             <CustomButton
               type="filled"
               title="Go Back"
-              handleClick={() => state.intro = true}
+              handleClick={() => {
+                state.intro = true;
+                setActiveEditorTab("");
+              }}
               customStyles="w-fit px-4 py-2.5 font-bold text-sm"
+            />
+            <CustomButton
+              type="filled"
+              title="Download"
+              handleClick={() => downloadCanvasToImage()}
+              customStyles="w-fit px-4 py-2.5 font-bold text-sm bg-green-500"
             />
           </motion.div>
 
